@@ -1,5 +1,7 @@
 import express, { urlencoded } from "express"
 import cors from 'cors'
+import healthCheck from './routes/healthCheck.route.js'
+
 const app = express();
 
 // default configuration
@@ -17,6 +19,10 @@ app.use(
         allowedHeaders: ["Context-type" , "Authorization"]
     }),
 )
+
+
+// routes   
+app.use("/api" , healthCheck)
 
 app.get('/' , (req , res) => {
     res.send("This is backend Project")
