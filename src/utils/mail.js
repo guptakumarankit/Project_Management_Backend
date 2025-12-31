@@ -1,4 +1,44 @@
 import Mailgen from 'mailgen';
+import nodemailer from 'nodemailer'
+
+const sendEmail = async(options) => {
+    const mailGenerator = new Mailgen({
+        theme: "default",
+        product:{
+            name:"Task Manager",
+            link:""
+        }
+    })
+
+    const emailTextual = mailGenerator.generatePlaintext(options.mailgenContent)
+
+    const emailHtml = mailGenerator.generatePlaintext(options.mailgenContent)
+
+
+    const transporter = modemailer.createTransport({
+        host:process.env.MAILTRAP_SMTP_HOST,
+        port:process.env.MAILTRAP_SMTP_PORT,
+        auth:{
+            user:process.env.MAILTRAP_SMTP_USER,
+            pass:process.env.MAILTRAP_SMTP_PASS
+        }
+    })
+
+    const mail = {
+        form: "kra.ankit1461@gmail.com",
+        to:options.email,
+        subject:options.subject,
+        text:emailTextual,
+        html:emailHtml
+    }
+
+    try {
+        await transporter.sendMail(mail)
+    } catch (error) {
+        console.error("Email service failed siliently . Make sure that you have provided your MAILTRAP credentials in the .env file")
+        console.error("Error:" , error);
+    }
+}
 
 const emailVerificationMailgenContent = (username , verificationUrl) => {
     return {
@@ -39,5 +79,6 @@ const forgetPasswordMailgenContent = (username , passwordResetUrl) => {
 
 export {
     emailVerificationMailgenContent ,
-    forgetPasswordMailgenContent
-}
+    forgetPasswordMailgenContent,
+    sendEmail
+} 
