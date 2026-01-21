@@ -1,6 +1,7 @@
 import express, { urlencoded } from "express"
 import cors from 'cors'
-import healthCheck from './routes/healthCheck.route.js'
+import healthCheckRouter from './routes/healthCheck.route.js'
+import authRouter from './routes/auth.route.js'
 
 const app = express();
 
@@ -10,7 +11,6 @@ app.use(express.urlencoded({ extended : true , limit : "16kb"}))
 app.use(express.static("public"))
 
 // cors configurations 
-
 app.use(
     cors({
         origin:process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173",
@@ -20,9 +20,9 @@ app.use(
     }),
 )
 
-
 // routes   
-app.use("/api" , healthCheck)
+app.use("/api" , healthCheckRouter)
+app.use("/api/auth" , authRouter)
 
 app.get('/' , (req , res) => {
     res.send("This is backend Project")
