@@ -25,7 +25,7 @@ const sendEmail = async(options) => {
     })
 
     const mail = {
-        form: "kra.ankit1461@gmail.com",
+        form: "ankit@gmail.com",
         to:options.email,
         subject:options.subject,
         text:emailTextual,
